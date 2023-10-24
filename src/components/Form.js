@@ -20,7 +20,6 @@ export default function Form({ onAddActivity }) {
   return (
     <form className="form" onSubmit={handleSubmit}>
       <div>
-        <h1>Hello</h1>
         <label htmlFor="name">Name</label>
         <input
           //   value="value"
@@ -31,10 +30,10 @@ export default function Form({ onAddActivity }) {
           placeholder="Your activity"
         />
 
-        <label htmlFor="isForGoodWeather">Is it for good weather?</label>
+        <label htmlFor="isGoodWeather">Is it for good weather?</label>
         <input
           type="checkbox"
-          id="isForGoodWeather"
+          id="isGoodWeather"
           className="form__checkbox"
           name="isGoodWeather"
         />
