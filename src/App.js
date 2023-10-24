@@ -1,9 +1,9 @@
 import { uid } from "uid";
+import React, { useState, useEffect } from "react";
+//Components
 import useLocalStorage from "use-local-storage";
 import Form from "./components/Form";
-import React from "react";
 import List from "./components/List";
-import { useState } from "react";
 
 function App() {
   const [weather, setWeather] = useState();
@@ -16,9 +16,30 @@ function App() {
 
   //--------------------------------------
 
-  function handleAddActivity(data) {
-    // console.log(data);
-    setActivities([{ ...activities, ...data, id: uid() }]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      async function startingFetching() {
+        const response = await fetch(
+          "https://example-apis.vercel.app/api/weather/europe"
+        );
+        const weatherData = await response.json();
+        setWeather(weatherData.isGoodWeather);
+      }
+      startingFetching();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  function handleAddActivity(activity) {
+    // console.log(activity);
+    setActivities([...activities, { ...activity, id: uid() }]);
+  }
+
+  function handleOnDeleteActivity(activityId) {
+    const newActivities = activities.filter(
+      (activity) => activity.id !== activityId
+    );
+    setActivities(newActivities);
   }
 
   const filteredActivites = () => {
@@ -32,7 +53,7 @@ function App() {
         activities={activities}
         filteredActivity={filteredActivites}
       />
-      <h1>Add new activity:</h1>
+      <h1>Weather and Activities:</h1>
       <Form onAddActivity={handleAddActivity} />
     </>
   );
